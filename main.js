@@ -14,16 +14,13 @@ function createWindow() {
         titleBarStyle:'hidden',
         width: 500,
         height:500,
+        backgroundColor: '#353535',
         resizable:false,
-        icon: path.join(__dirname, 'main_icon.png')
+        icon: `file://${__dirname}/dist/media-player/assets/main_icon.png`
     });
 
-    window.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file',
-        slashes: true
-    }));
-   window.webContents.openDevTools();
+    window.loadURL(`file://${__dirname}/dist/media-player/index.html`);
+  // window.webContents.openDevTools();
     window.on('closed', () =>{
         window = null;
     });
@@ -31,10 +28,10 @@ function createWindow() {
 
 /**
  * ipc.on('event_name', function(event){
- *  Have a function arguement to tell the main 
+ *  Have a function arguement to tell the main
  *  process what to do when the render process
  *  sends for a request
- * 
+ *
  *  To send back a response you write
  *  the event name must be the same
  *  event.sender.send('event_name', response);
@@ -43,13 +40,13 @@ function createWindow() {
 
  /**
   * To active ipc on the render process you write this code
-  *  
+  *
   * import electron and the ipc
-  * 
+  *
   * HTML.addEventListener('click',function(){
   *     ipc.send('event_name');
   * });
-  * 
+  *
   * ipc.on('event_name',function(event,arg){
   *     the argument is the response
   *     console.log(arg);
