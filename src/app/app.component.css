@@ -1,4 +1,28 @@
-#play{
-  font-size:30px;
-  color:#ff4242;
+header{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-self: stretch;
+  height:50x;
+  -webkit-app-region: drag;
+}
+#content{
+  display: flex;
+  height:100vh;
+  flex-direction: column;
+  align-items: center;
+}
+
+.option{
+  padding:9px 9px;
+  font-size:.5rem;
+  cursor: pointer;
+  -webkit-app-region:no-drag;
+
+}
+#close:hover{
+  background-color:#ff4242;
+}
+#minimize:hover{
+  background-color: #b3b300;
 }

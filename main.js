@@ -12,11 +12,12 @@ function createWindow() {
     window = new BroswerWindow({
         title:"Media Player",
         titleBarStyle:'hidden',
-        width: 500,
-        height:500,
-        backgroundColor: '#353535',
+        width: 400,
+        height:400,
+        frame:false,
+        backgroundColor: '#222222',
         resizable:false,
-        icon: `file://${__dirname}/dist/media-player/assets/main_icon.png`
+        icon: `file://${__dirname}/dist/media-player/assets/main_icon.PNG`
     });
 
     window.loadURL(`file://${__dirname}/dist/media-player/index.html`);
@@ -58,7 +59,6 @@ app.on('ready', function(){
     /**
      * Creating the menu after creating
      * the window
-     */
     const template = [
         {
             label: 'File',
@@ -80,6 +80,6 @@ app.on('ready', function(){
     ];
 
     const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
+    Menu.setApplicationMenu(menu);*/
 
 });
