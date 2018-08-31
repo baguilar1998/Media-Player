@@ -9,14 +9,21 @@ const ipc = electron.ipcRenderer;
 let window;
 
 function createWindow() {
-    window = new BroswerWindow({title:"Media Player"});
+    window = new BroswerWindow({
+        title:"Media Player",
+        titleBarStyle:'hidden',
+        width: 500,
+        height:500,
+        resizable:false,
+        icon: path.join(__dirname, 'main_icon.png')
+    });
 
     window.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file',
         slashes: true
     }));
-   // window.webContents.openDevTools();
+   window.webContents.openDevTools();
     window.on('closed', () =>{
         window = null;
     });
@@ -77,5 +84,5 @@ app.on('ready', function(){
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
-    
+
 });
