@@ -1,27 +1,39 @@
 <div class="content">
     <header>
       <div id="close" class="option" (click)="closeWindow()">
-          <i class="fa fa-close" style="font-size:15px;color:white"></i>
+          <i class="fas fa-times" style="font-size:15px;color:white"></i>
       </div>
       <div (click)="minimizeWindow()" id="minimize" class="option">
-          <i class="fa fa-window-minimize" style="font-size:10px;color:white"></i>
+          <i class="fas fa-window-minimize" style="font-size:10px;color:white"></i>
       </div>
     </header>
-    <img src='assets/unknown_song.jpg' style="width:70%">
-    <div>
-      <h1 style="color:#ff4242">Media Player</h1>
-      <p style="color:#ff4242">Fixing up containers</p>
+    <!-- Main Content-->
+    <div class="body">
+      <!--Album Art-->
+      <img src='assets/unknown_song.jpg' style="width:50%">
+      <!-- Album Information-->
       <div>
-          <button type="button" id="button_fbw" class="btn default">
-              <i style="color:#ff4242" class="fas fa-fast-backward"></i>
-            </button>
-            <button (click)="changeButton()" type="button" id="button_play" class="btn default">
-                <i *ngIf="!this.state" style="color:#ff4242" class="fas fa-play"></i>
-                <i *ngIf="this.state" style="color:#ff4242" class="fas fa-pause"></i>
-            </button>
-            <button type="button" id="button_ffw" class="btn default">
-                <i  style="color:#ff4242"class="fas fa-fast-forward"></i>
-            </button>
+        <!--Title-->
+        <h1  style="color:#ff4242">Title</h1>
+        <!--Artist-->
+        <p style="color:#ff4242;font-size:14pt">Artist</p>
+        <!--Album-->
+      </div>
+      <!--Buttons -->
+      <div>
+        <!--Previous-->
+        <button type="button" id="button_fbw" class="btn default">
+          <i style="color:#ff4242" class="fas fa-fast-backward"></i>
+        </button>
+        <!--Play/Pause-->
+        <button (click)="changeButton()" type="button" id="button_play" class="btn default">
+          <i *ngIf="!this.state" style="color:#ff4242" class="fas fa-play"></i>
+          <i *ngIf="this.state" style="color:#ff4242" class="fas fa-pause"></i>
+        </button>
+        <!--Next-->
+        <button type="button" id="button_ffw" class="btn default">
+          <i  style="color:#ff4242"class="fas fa-fast-forward"></i>
+        </button>
       </div>
     </div>
 </div>

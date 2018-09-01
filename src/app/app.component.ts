@@ -7,15 +7,11 @@ import { ElectronService } from '../../node_modules/ngx-electron';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
   state = false;
-
-
   constructor(private _electronService: ElectronService) {}
 
   changeButton() {
     this.state = !this.state;
-    console.log(this.state);
   }
   /**
    * Minimizes the window
