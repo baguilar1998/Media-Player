@@ -7,10 +7,22 @@
           <i class="fa fa-window-minimize" style="font-size:10px;color:white"></i>
       </div>
     </header>
-    <img src='assets/unknown_song.jpg'>
+    <img src='assets/unknown_song.jpg' style="width:70%">
     <div>
       <h1 style="color:#ff4242">Media Player</h1>
       <p style="color:#ff4242">Fixing up containers</p>
+      <div>
+          <button type="button" id="button_fbw" class="btn default">
+              <i style="color:#ff4242" class="fas fa-fast-backward"></i>
+            </button>
+            <button (click)="changeButton()" type="button" id="button_play" class="btn default">
+                <i *ngIf="!this.state" style="color:#ff4242" class="fas fa-play"></i>
+                <i *ngIf="this.state" style="color:#ff4242" class="fas fa-pause"></i>
+            </button>
+            <button type="button" id="button_ffw" class="btn default">
+                <i  style="color:#ff4242"class="fas fa-fast-forward"></i>
+            </button>
+      </div>
     </div>
 </div>
 
