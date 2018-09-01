@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ipcRenderer} from 'electron';
+import { ElectronService } from '../../node_modules/ngx-electron';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,19 @@ import {ipcRenderer} from 'electron';
 export class AppComponent {
   title = 'app';
 
-  /*closeWindow() {
-    ipcRenderer.send('close_window');
-  }*/
+  constructor(private _electronService: ElectronService) {}
+
+  /**
+   * Minimizes the window
+   */
+  minimizeWindow() {
+    this._electronService.ipcRenderer.send('minimize');
+  }
+
+  /**
+   * Closes the main window
+   */
+  closeWindow() {
+    this._electronService.ipcRenderer.send('close_window');
+  }
 }

@@ -26,6 +26,7 @@
     "@angular/router": "^6.0.3",
     "@types/electron": "^1.6.10",
     "core-js": "^2.5.4",
+    "ngx-electron": "^1.0.4",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },

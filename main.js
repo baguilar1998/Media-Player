@@ -4,7 +4,7 @@ const BroswerWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const Menu = electron.Menu;
-const ipc = electron.ipcRenderer;
+const ipc = electron.ipcMain;
 
 let window;
 
@@ -27,6 +27,15 @@ function createWindow() {
     });
 }
 
+// Closes the window
+ipc.on('close_window',function(event){
+  window.close();
+});
+
+// Minmizes the window
+ipc.on('minimize', function(event){
+  window.minimize();
+});
 /**
  * ipc.on('event_name', function(event){
  *  Have a function arguement to tell the main
@@ -56,30 +65,4 @@ function createWindow() {
 
 app.on('ready', function(){
     createWindow();
-    /**
-     * Creating the menu after creating
-     * the window
-    const template = [
-        {
-            label: 'File',
-            submenu:[
-                {
-                    label:'Add Song'
-                },
-                {
-                    label:'Exit',
-                    click: function(){
-                        window.close();
-                    }
-                }
-            ]
-        },
-        {
-            label: 'Help'
-        }
-    ];
-
-    const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);*/
-
 });

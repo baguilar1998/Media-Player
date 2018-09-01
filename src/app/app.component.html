@@ -1,9 +1,9 @@
 <div class="content">
     <header>
-      <div id="close" class="option">
+      <div id="close" class="option" (click)="closeWindow()">
           <i class="fa fa-close" style="font-size:15px;color:white"></i>
       </div>
-      <div id="minimize" class="option">
+      <div (click)="minimizeWindow()" id="minimize" class="option">
           <i class="fa fa-window-minimize" style="font-size:10px;color:white"></i>
       </div>
     </header>
