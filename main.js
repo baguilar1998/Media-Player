@@ -4,6 +4,7 @@ const BroswerWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
 const dialog = electron.dialog;
+const jsmediatags = require('jsmediatags');
 const fs = require('fs');
 const ipc = electron.ipcMain;
 
@@ -42,6 +43,16 @@ ipc.on('open-file-system', function(event){
   dialog.showOpenDialog({
     properties: [ 'openFile' ] }, function ( filename ) {
       console.log( filename.toString() );
+     new jsmediatags.Reader(filename.toString() )
+     .setTagsToRead(["title", "artist"])
+     .read({
+        onSuccess: function(tag) {
+          console.log(tag);
+        },
+        onError: function(error) {
+          console.log(':(', error.type, error.info);
+        }
+      });
       event.returnValue=filename;
     }
   );
