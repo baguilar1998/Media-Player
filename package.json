@@ -29,6 +29,7 @@
     "dialog": "^0.3.1",
     "file-system": "^2.2.2",
     "jsmediatags": "^3.8.1",
+    "musicmetadata": "^2.0.5",
     "ngx-electron": "^1.0.4",
     "remote": "^0.2.6",
     "rxjs": "^6.0.0",

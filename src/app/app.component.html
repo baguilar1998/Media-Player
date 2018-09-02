@@ -24,7 +24,7 @@
       <!-- Album Information-->
       <div class="col-lg-12">
         <!--Title-->
-        <h1  style="color:#ff4242">{{songName}}</h1>
+        <h1  style="color:#ff4242;font-size:12pt">{{songName}}</h1>
         <!--Artist-->
         <p style="color:#ff4242;font-size:14pt">{{artistName}}</p>
         <!--Album-->
@@ -33,7 +33,7 @@
       <!--Buttons -->
       <div class="col-lg-12">
         <!--Previous-->
-        <button type="button" id="button_fbw" class="btn default">
+        <button (click)="prev()" type="button" id="button_fbw" class="btn default">
           <i style="color:#ff4242" class="fas fa-fast-backward"></i>
         </button>
         <!--Play/Pause-->
@@ -42,7 +42,7 @@
           <i *ngIf="this.state" style="color:#ff4242" class="fas fa-pause"></i>
         </button>
         <!--Next-->
-        <button type="button" id="button_ffw" class="btn default">
+        <button (click)="next()" type="button" id="button_ffw" class="btn default">
           <i  style="color:#ff4242"class="fas fa-fast-forward"></i>
         </button>
       </div>

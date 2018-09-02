@@ -6,6 +6,7 @@ const url = require('url');
 const dialog = electron.dialog;
 const jsmediatags = require('jsmediatags');
 const fs = require('fs');
+const mm = require('musicmetadata');
 const ipc = electron.ipcMain;
 
 let window;
@@ -39,25 +40,26 @@ ipc.on('minimize', function(event){
   window.minimize();
 });
 
+// Opens up the file system
 ipc.on('open-file-system', function(event){
+  var songData;
   dialog.showOpenDialog({
     properties: [ 'openFile' ] }, function ( filename ) {
       if(filename === undefined) {
         event.returnValue = null;
         return;
       }
-     new jsmediatags.Reader(filename.toString() )
-     .setTagsToRead(["title", "artist"])
-     .read({
-        onSuccess: function(tag) {
-          event.returnValue={filePath:filename, tag:content};
-          console.log(tag);
-        },
-        onError: function(error) {
-          console.log(':(', error.type, error.info);
-        }
+
+      // Reads the MP3 to obtain the following information
+      var readableStream = fs.createReadStream(filename.toString());
+      var parser = mm(readableStream, function (err, metadata) {
+        if (err) throw err;
+        console.log(metadata);
+        readableStream.close();
+        // Returns the path of the mp3 and the following information
+        event.returnValue={filePath:filename, information:metadata};
       });
-      event.returnValue={filePath:filename, tag:null};
+
     }
   );
 })
@@ -88,6 +90,7 @@ ipc.on('open-file-system', function(event){
   * });
   */
 
+//Creates the window
 app.on('ready', function(){
     createWindow();
 });
