@@ -44,9 +44,26 @@ export class AppComponent {
       this.playAndPause();
     }
     const newSong = this._electronService.ipcRenderer.sendSync('open-file-system');
-    if (!newSong) { return; }
+    if (!newSong.filePath) { return; }
+    window.alert(newSong.tag);
+    if (!this.isEmpty(newSong.tag.tags)) {
+      this.songName = newSong.tag.title;
+      this.artistName = newSong.tag.artist;
+    } else {
+      this.songName = 'Unknown Title';
+      this.artistName = 'Unknown Artist';
+    }
     this.audio = new Audio();
-    this.audio.src = newSong;
+    this.audio.src = newSong.filePath;
     this.audio.load();
+  }
+
+  isEmpty(obj) {
+    for (const prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+          return false;
+        }
+    }
+    return true;
   }
 }

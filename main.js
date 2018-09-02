@@ -42,18 +42,22 @@ ipc.on('minimize', function(event){
 ipc.on('open-file-system', function(event){
   dialog.showOpenDialog({
     properties: [ 'openFile' ] }, function ( filename ) {
-      console.log( filename.toString() );
+      if(filename === undefined) {
+        event.returnValue = null;
+        return;
+      }
      new jsmediatags.Reader(filename.toString() )
      .setTagsToRead(["title", "artist"])
      .read({
         onSuccess: function(tag) {
+          event.returnValue={filePath:filename, tag:content};
           console.log(tag);
         },
         onError: function(error) {
           console.log(':(', error.type, error.info);
         }
       });
-      event.returnValue=filename;
+      event.returnValue={filePath:filename, tag:null};
     }
   );
 })
