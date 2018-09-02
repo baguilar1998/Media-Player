@@ -1,4 +1,5 @@
 <div class="content">
+
     <header>
       <div id="close" class="option" (click)="closeWindow()">
           <i class="fas fa-times" style="font-size:15px;color:white"></i>
@@ -6,27 +7,37 @@
       <div (click)="minimizeWindow()" id="minimize" class="option">
           <i class="fas fa-window-minimize" style="font-size:10px;color:white"></i>
       </div>
+      <div  (click)="chooseSong()" id="add" class="option" style="flex-direction:row">
+          <i class="fas fa-plus" style="font-size:15px;color:white"></i>
+      </div>
     </header>
+
     <!-- Main Content-->
-    <div class="body">
+    <div class="row text-center" style="margin:auto">
+
       <!--Album Art-->
-      <img src='assets/unknown_song.jpg' style="width:50%">
+      <div class="col-lg-12">
+        <img src='assets/unknown_song.jpg'>
+      </div>
+
+
       <!-- Album Information-->
-      <div>
+      <div class="col-lg-12">
         <!--Title-->
-        <h1  style="color:#ff4242">Title</h1>
+        <h1  style="color:#ff4242">{{songName}}</h1>
         <!--Artist-->
-        <p style="color:#ff4242;font-size:14pt">Artist</p>
+        <p style="color:#ff4242;font-size:14pt">{{artistName}}</p>
         <!--Album-->
       </div>
+
       <!--Buttons -->
-      <div>
+      <div class="col-lg-12">
         <!--Previous-->
         <button type="button" id="button_fbw" class="btn default">
           <i style="color:#ff4242" class="fas fa-fast-backward"></i>
         </button>
         <!--Play/Pause-->
-        <button (click)="changeButton()" type="button" id="button_play" class="btn default">
+        <button (click)="playAndPause()" type="button" id="button_play" class="btn default">
           <i *ngIf="!this.state" style="color:#ff4242" class="fas fa-play"></i>
           <i *ngIf="this.state" style="color:#ff4242" class="fas fa-pause"></i>
         </button>
@@ -35,7 +46,9 @@
           <i  style="color:#ff4242"class="fas fa-fast-forward"></i>
         </button>
       </div>
+
     </div>
+
 </div>
 
 

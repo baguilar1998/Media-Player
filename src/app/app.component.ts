@@ -8,10 +8,22 @@ import { ElectronService } from '../../node_modules/ngx-electron';
 })
 export class AppComponent {
   state = false;
-  constructor(private _electronService: ElectronService) {}
+  songName = 'Unknown Title';
+  artistName = 'Unknown Artist';
+  audio;
+  constructor(private _electronService: ElectronService) {
+    this.audio = new Audio();
+    this.audio.src = `file://${__dirname}/assets/summer-rain.mp3`;
+    this.audio.load();
+  }
 
-  changeButton() {
+  playAndPause() {
     this.state = !this.state;
+    if (!this.state) {
+      this.audio.pause();
+    } else {
+      this.audio.play();
+    }
   }
   /**
    * Minimizes the window
@@ -25,5 +37,16 @@ export class AppComponent {
    */
   closeWindow() {
     this._electronService.ipcRenderer.send('close_window');
+  }
+
+  chooseSong() {
+    if (this.state) {
+      this.playAndPause();
+    }
+    const newSong = this._electronService.ipcRenderer.sendSync('open-file-system');
+    if (!newSong) { return; }
+    this.audio = new Audio();
+    this.audio.src = newSong;
+    this.audio.load();
   }
 }

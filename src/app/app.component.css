@@ -7,10 +7,7 @@ header{
   -webkit-app-region: drag;
 }
 #content{
-  display: flex;
   height:100vh;
-  flex-direction: column;
-  align-items: center;
 }
 
 .option{
@@ -26,9 +23,10 @@ header{
 #minimize:hover{
   background-color: #b3b300;
 }
+#add:hover{
+  background-color:#339966;
+}
 .default{
   background-color:#222222;
 }
-#body{
-  float: grow 1pt;
-}
+

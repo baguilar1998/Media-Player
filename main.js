@@ -3,7 +3,8 @@ const app = electron.app;
 const BroswerWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
-const Menu = electron.Menu;
+const dialog = electron.dialog;
+const fs = require('fs');
 const ipc = electron.ipcMain;
 
 let window;
@@ -12,8 +13,8 @@ function createWindow() {
     window = new BroswerWindow({
         title:"Media Player",
         titleBarStyle:'hidden',
-        width: 400,
-        height:400,
+        width: 450,
+        height:450,
         frame:false,
         backgroundColor: '#222222',
         resizable:false,
@@ -21,7 +22,7 @@ function createWindow() {
     });
 
     window.loadURL(`file://${__dirname}/dist/media-player/index.html`);
-    // window.webContents.openDevTools();
+    //window.webContents.openDevTools();
     window.on('closed', () =>{
         window = null;
     });
@@ -36,6 +37,15 @@ ipc.on('close_window',function(event){
 ipc.on('minimize', function(event){
   window.minimize();
 });
+
+ipc.on('open-file-system', function(event){
+  dialog.showOpenDialog({
+    properties: [ 'openFile' ] }, function ( filename ) {
+      console.log( filename.toString() );
+      event.returnValue=filename;
+    }
+  );
+})
 /**
  * ipc.on('event_name', function(event){
  *  Have a function arguement to tell the main
