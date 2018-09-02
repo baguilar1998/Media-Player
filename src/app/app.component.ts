@@ -11,17 +11,17 @@ export class AppComponent {
   state = false;
   songName = 'Unknown Title';
   artistName = 'Unknown Artist';
-  cursor = 0;
+  cursor;
   audio;
   songList: Song[] = [];
-  constructor(private _electronService: ElectronService) {
-    this.songList[this.cursor] = new Song(this.songName, this.artistName, `file://${__dirname}/assets/summer-rain.mp3`);
-    this.audio = new Audio();
-    this.audio.src = this.songList[this.cursor].filePath;
-    this.audio.load();
-  }
 
+  constructor(private _electronService: ElectronService) {}
+
+  /**
+   * Plays/Pauses the song
+   */
   playAndPause() {
+    if (this.songList.length === 0) { return; }
     this.state = !this.state;
     if (!this.state) {
       this.audio.pause();
@@ -31,6 +31,7 @@ export class AppComponent {
       // CODE TO BE IMPLEMENTED TO START
     }
   }
+
   /**
    * Minimizes the window
    */
@@ -71,6 +72,7 @@ export class AppComponent {
     this.cursor = this.songList.length - 1;
     this.audio.src = this.songList[this.cursor].filePath;
     this.audio.load();
+    this.playAndPause();
   }
 
   /**
@@ -83,6 +85,7 @@ export class AppComponent {
     this.audio.src = this.songList[this.cursor].filePath;
     this.changeInformation();
     this.audio.load();
+    this.playAndPause();
   }
 
   /**
@@ -95,6 +98,7 @@ export class AppComponent {
     this.audio.src = this.songList[this.cursor].filePath;
     this.changeInformation();
     this.audio.load();
+    this.playAndPause();
   }
 
   /**
@@ -105,17 +109,4 @@ export class AppComponent {
     this.artistName = this.songList[this.cursor].artist;
   }
 
-  /**
-   * Helper function to check if a javascript object
-   * is empty
-   * @param obj javacript object
-   */
-  isEmpty(obj) {
-    for (const prop in obj) {
-        if (obj.hasOwnProperty(prop)) {
-          return false;
-        }
-    }
-    return true;
-  }
 }
