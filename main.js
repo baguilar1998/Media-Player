@@ -1,10 +1,9 @@
 const electron = require('electron');
 const app = electron.app;
 const BroswerWindow = electron.BrowserWindow;
-const path = require('path');
-const url = require('url');
+//const path = require('path');
+//const url = require('url');
 const dialog = electron.dialog;
-const jsmediatags = require('jsmediatags');
 const fs = require('fs');
 const mm = require('musicmetadata');
 const ipc = electron.ipcMain;
@@ -63,32 +62,6 @@ ipc.on('open-file-system', function(event){
     }
   );
 })
-/**
- * ipc.on('event_name', function(event){
- *  Have a function arguement to tell the main
- *  process what to do when the render process
- *  sends for a request
- *
- *  To send back a response you write
- *  the event name must be the same
- *  event.sender.send('event_name', response);
- * })
- */
-
- /**
-  * To active ipc on the render process you write this code
-  *
-  * import electron and the ipc
-  *
-  * HTML.addEventListener('click',function(){
-  *     ipc.send('event_name');
-  * });
-  *
-  * ipc.on('event_name',function(event,arg){
-  *     the argument is the response
-  *     console.log(arg);
-  * });
-  */
 
 //Creates the window
 app.on('ready', function(){
