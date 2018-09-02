@@ -25,8 +25,10 @@ export class AppComponent {
     this.state = !this.state;
     if (!this.state) {
       this.audio.pause();
+      // CODE TO BE IMPLEMENTED TO STOP THREAD
     } else {
       this.audio.play();
+      // CODE TO BE IMPLEMENTED TO START THREAD
     }
   }
   /**
