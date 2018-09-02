@@ -28,7 +28,7 @@ export class AppComponent {
       // CODE TO BE IMPLEMENTED TO STOP THREAD
     } else {
       this.audio.play();
-      // CODE TO BE IMPLEMENTED TO START THREAD
+      // CODE TO BE IMPLEMENTED TO START
     }
   }
   /**
@@ -61,14 +61,14 @@ export class AppComponent {
       this.artistName = newSong.information.artist[0];
       s = new Song(this.songName, this.artistName, newSong.filePath);
     } else {
-      this.songName = 'Unknown Title';
+      const file = newSong.filePath + '';
+      this.songName = file.substr(file.lastIndexOf('\\') + 1, file.length - 1);
       this.artistName = 'Unknown Artist';
       s = new Song(this.songName, this.artistName, newSong.filePath);
     }
     this.songList.push(s);
     this.audio = new Audio();
     this.cursor = this.songList.length - 1;
-    window.alert(this.cursor);
     this.audio.src = this.songList[this.cursor].filePath;
     this.audio.load();
   }
