@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ElectronService } from '../../node_modules/ngx-electron';
-import {Song} from './Song';
+import { Song } from './Song';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +11,7 @@ export class AppComponent {
   state = false;
   songName = 'Unknown Title';
   artistName = 'Unknown Artist';
+  currentArt = `file://${__dirname}/assets/unknown_song.jpg`;
   cursor;
   audio;
   songList: Song[] = [];
@@ -61,18 +62,23 @@ export class AppComponent {
       this.songName = newSong.information.title;
       this.artistName = newSong.information.artist[0];
       s = new Song(this.songName, this.artistName, newSong.filePath);
+      // s.setAlbumArt('data:image/jpg;base64,' + newSong.information.picture[0].data.toString());
+      s.setAlbumArt(`file://${__dirname}/assets/unknown_song.jpg`);
     } else {
       const file = newSong.filePath + '';
       this.songName = file.substr(file.lastIndexOf('\\') + 1, file.length - 1);
       this.artistName = 'Unknown Artist';
       s = new Song(this.songName, this.artistName, newSong.filePath);
+      s.setAlbumArt(`file://${__dirname}/assets/unknown_song.jpg`);
     }
     this.songList.push(s);
     this.audio = new Audio();
     this.cursor = this.songList.length - 1;
     this.audio.src = this.songList[this.cursor].filePath;
+    this.currentArt = s.albumArt;
     this.audio.load();
     this.playAndPause();
+    this.closeNav();
   }
 
   /**
@@ -107,6 +113,16 @@ export class AppComponent {
   changeInformation() {
     this.songName = this.songList[this.cursor].title;
     this.artistName = this.songList[this.cursor].artist;
+    this.currentArt = this.songList[this.cursor].albumArt;
   }
 
+  openNav() {
+    document.getElementById('mySidenav').style.width = '250px';
+    document.getElementById('main').style.marginLeft = '250px';
+  }
+
+  closeNav() {
+    document.getElementById('mySidenav').style.width = '0';
+    document.getElementById('main').style.marginLeft = '0';
+  }
 }
