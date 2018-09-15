@@ -15,6 +15,9 @@ export class MainComponent {
   cursor;
   audio;
   songList: Song[] = [];
+  seekerSlider = document.getElementById('songseeker') as HTMLInputElement;
+  seeking;
+  seekto;
 
   constructor(private _electronService: ElectronService) {}
 
@@ -125,4 +128,26 @@ export class MainComponent {
     document.getElementById('mySidenav').style.width = '0';
     document.getElementById('main').style.marginLeft = '0';
   }
+
+  mouseDownSeek(event) {
+    this.seeking = true;
+    this.seek(event);
+  }
+
+  mouseUpSeek(event) {
+    this.seeking = false;
+  }
+
+  mouseMoveSeek(event) {
+    this.seek(event);
+  }
+
+  seek(event) {
+    if (this.seeking) {
+      this.seekerSlider.value = event.clientX - (this.seekerSlider.offsetLeft) + '';
+        this.seekto = this.audio.duration * ( parseInt(this.seekerSlider.value, 10) / 100);
+        this.audio.currentTime = this.seekto;
+    }
+  }
+
 }
