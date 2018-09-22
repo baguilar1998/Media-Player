@@ -7,19 +7,27 @@ import { Song } from '../Song';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
   state = false;
+  // Keeps track of the seekbar
+  position = 1;
   songName = 'Unknown Title';
   artistName = 'Unknown Artist';
   currentArt = `file://${__dirname}/assets/unknown_song.jpg`;
   cursor;
   audio;
   songList: Song[] = [];
-  seekerSlider = document.getElementById('songseeker') as HTMLInputElement;
-  seeking;
-  seekto;
+ // seekerSlider = document.getElementById('songseeker') as HTMLInputElement;
+  // seeking;
+  // seekto;
 
   constructor(private _electronService: ElectronService) {}
+
+  ngOnInit() {
+    this.audio = new Audio();
+    this.audio.onended = this.songEnded.bind(this);
+    this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
+  }
 
   /**
    * Plays/Pauses the song
@@ -75,12 +83,13 @@ export class MainComponent {
       s.setAlbumArt(`file://${__dirname}/assets/unknown_song.jpg`);
     }
     this.songList.push(s);
-    this.audio = new Audio();
     this.cursor = this.songList.length - 1;
     this.audio.src = this.songList[this.cursor].filePath;
     this.currentArt = s.albumArt;
     this.audio.load();
     this.playAndPause();
+    this.audio.onended = this.songEnded.bind(this);
+    this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
     this.closeNav();
   }
 
@@ -89,11 +98,12 @@ export class MainComponent {
    */
   next() {
     if (this.state) { this.playAndPause(); }
-    this.audio = new Audio();
     if (++this.cursor === this.songList.length) { this.cursor = 0; }
     this.audio.src = this.songList[this.cursor].filePath;
     this.changeInformation();
     this.audio.load();
+    this.audio.onended = this.songEnded.bind(this);
+    this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
     this.playAndPause();
   }
 
@@ -102,11 +112,12 @@ export class MainComponent {
    */
   prev() {
     if (this.state) { this.playAndPause(); }
-    this.audio = new Audio();
     if (--this.cursor < 0) { this.cursor = this.songList.length - 1; }
     this.audio.src = this.songList[this.cursor].filePath;
     this.changeInformation();
     this.audio.load();
+    this.audio.onended = this.songEnded.bind(this);
+    this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
     this.playAndPause();
   }
 
@@ -129,25 +140,13 @@ export class MainComponent {
     document.getElementById('main').style.marginLeft = '0';
   }
 
-  mouseDownSeek(event) {
-    this.seeking = true;
-    this.seek(event);
+  songEnded(event) {
+    this.next();
   }
 
-  mouseUpSeek(event) {
-    this.seeking = false;
+  handleTimeUpdate(e) {
+    const elapsed =  this.audio.currentTime;
+    const duration =  this.audio.duration;
+    this.position = elapsed / duration;
   }
-
-  mouseMoveSeek(event) {
-    this.seek(event);
-  }
-
-  seek(event) {
-    if (this.seeking) {
-      this.seekerSlider.value = event.clientX - (this.seekerSlider.offsetLeft) + '';
-        this.seekto = this.audio.duration * ( parseInt(this.seekerSlider.value, 10) / 100);
-        this.audio.currentTime = this.seekto;
-    }
-  }
-
 }

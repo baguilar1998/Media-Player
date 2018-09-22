@@ -23,7 +23,7 @@ function createWindow() {
     });
 
     window.loadURL(`file://${__dirname}/dist/media-player/index.html`);
-    //window.webContents.openDevTools();
+    // window.webContents.openDevTools();
     window.on('closed', () =>{
         window = null;
     });
