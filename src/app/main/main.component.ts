@@ -10,7 +10,7 @@ import { Song } from '../Song';
 export class MainComponent implements OnInit {
   state = false;
   // Keeps track of the seekbar
-  position = 1;
+  position = 0;
   songName = 'Unknown Title';
   artistName = 'Unknown Artist';
   currentArt = `file://${__dirname}/assets/unknown_song.jpg`;
@@ -37,10 +37,8 @@ export class MainComponent implements OnInit {
     this.state = !this.state;
     if (!this.state) {
       this.audio.pause();
-      // CODE TO BE IMPLEMENTED TO STOP THREAD
     } else {
       this.audio.play();
-      // CODE TO BE IMPLEMENTED TO START
     }
   }
 
@@ -147,6 +145,7 @@ export class MainComponent implements OnInit {
   handleTimeUpdate(e) {
     const elapsed =  this.audio.currentTime;
     const duration =  this.audio.duration;
-    this.position = elapsed / duration;
+    this.position = ((elapsed / duration) * 100);
+    console.log(this.position);
   }
 }
