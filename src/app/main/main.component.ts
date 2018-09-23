@@ -1,32 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { ElectronService } from '.../../node_modules/ngx-electron';
 import { Song } from '../Song';
+import { Subject } from '../../../node_modules/rxjs';
+import { MusicService } from '../services/music.service';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, DoCheck {
+  // Play/Pause state variable
   state = false;
-  // Keeps track of the seekbar
-  position = 0;
-  songName = 'Unknown Title';
-  artistName = 'Unknown Artist';
-  currentArt = `file://${__dirname}/assets/unknown_song.jpg`;
-  cursor;
-  audio;
-  songList: Song[] = [];
- // seekerSlider = document.getElementById('songseeker') as HTMLInputElement;
-  // seeking;
-  // seekto;
 
-  constructor(private _electronService: ElectronService) {}
+
+  // Song Name
+  songName =  this.musicService.getCurrentSongName();
+  songNameSub;
+
+  // Artist Name
+  artistName = this.musicService.getCurrentArtist();
+  artistSub;
+
+  currentArt = `file://${__dirname}/assets/unknown_song.jpg`;
+
+  // The current audio that will be played
+  audio;
+
+  // Stores a list of songs
+  songList: Song[] = [];
+  cursor;
+  position = 0;
+
+  constructor(private _electronService: ElectronService, private musicService: MusicService) {
+    this.songNameSub = this.musicService.songNameChanged.subscribe(data => this.songName = data);
+    this.artistSub = this.musicService.artistChanged.subscribe(data => this.artistName = data);
+  }
 
   ngOnInit() {
     this.audio = new Audio();
     this.audio.onended = this.songEnded.bind(this);
     this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
+  }
+
+  ngDoCheck() {
+    if (this.audio.ended) { console.log('song ended'); }
+   /* if ( this.songName !== this.musicService.getCurrentSongName()) {
+      this.musicService.setSongName(this.songName);
+      console.log('song has been changed');
+    }*/
   }
 
   /**
@@ -86,7 +108,7 @@ export class MainComponent implements OnInit {
     this.currentArt = s.albumArt;
     this.audio.load();
     this.playAndPause();
-    this.audio.onended = this.songEnded.bind(this);
+    // this.audio.onended = this.songEnded.bind(this);
     this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
     this.closeNav();
   }
@@ -97,11 +119,7 @@ export class MainComponent implements OnInit {
   next() {
     if (this.state) { this.playAndPause(); }
     if (++this.cursor === this.songList.length) { this.cursor = 0; }
-    this.audio.src = this.songList[this.cursor].filePath;
-    this.changeInformation();
-    this.audio.load();
-    this.audio.onended = this.songEnded.bind(this);
-    this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
+    this.changeAudio();
     this.playAndPause();
   }
 
@@ -111,21 +129,25 @@ export class MainComponent implements OnInit {
   prev() {
     if (this.state) { this.playAndPause(); }
     if (--this.cursor < 0) { this.cursor = this.songList.length - 1; }
-    this.audio.src = this.songList[this.cursor].filePath;
-    this.changeInformation();
-    this.audio.load();
-    this.audio.onended = this.songEnded.bind(this);
-    this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
+    this.changeAudio();
     this.playAndPause();
   }
 
   /**
    * Changes the information of the song in frontend
    */
-  changeInformation() {
-    this.songName = this.songList[this.cursor].title;
-    this.artistName = this.songList[this.cursor].artist;
+  private changeInformation() {
+    this.musicService.setSongName(this.songList[this.cursor].title);
+    this.musicService.setArtist(this.songList[this.cursor].artist);
     this.currentArt = this.songList[this.cursor].albumArt;
+  }
+
+  private changeAudio() {
+    this.audio.src = this.songList[this.cursor].filePath;
+   // this.audio.onended = this.songEnded.bind(this);
+    this.audio.ontimeupdate = this.handleTimeUpdate.bind(this);
+    this.changeInformation();
+    this.audio.load();
   }
 
   openNav() {
@@ -138,7 +160,7 @@ export class MainComponent implements OnInit {
     document.getElementById('main').style.marginLeft = '0';
   }
 
-  songEnded(event) {
+  songEnded() {
     this.next();
   }
 
@@ -146,6 +168,5 @@ export class MainComponent implements OnInit {
     const elapsed =  this.audio.currentTime;
     const duration =  this.audio.duration;
     this.position = ((elapsed / duration) * 100);
-    console.log(this.position);
   }
 }
